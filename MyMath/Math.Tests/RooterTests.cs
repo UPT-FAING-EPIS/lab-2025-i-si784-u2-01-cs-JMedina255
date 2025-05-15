@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Math.Lib;
+using System;
+
 namespace Math.Tests
 {
     [TestClass]
@@ -28,6 +30,40 @@ namespace Math.Tests
             double actualResult = rooter.SquareRoot(input);
             Assert.AreEqual(expectedResult, actualResult, delta: expectedResult / 1000);
         }
+
+        [TestMethod]
+        public void RooterTestNegativeInputx()
+        {
+            Rooter rooter = new Rooter();
+            try
+            {
+                rooter.SquareRoot(-10);
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                return;
+            }
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void RooterTestNegativeInputMessage()
+        {
+            try
+            {
+                new Rooter().SquareRoot(-5);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                StringAssert.Contains(
+                    ex.Message,
+                    "El valor ingresado es invalido, solo se puede ingresar números positivos"
+                );
+                return;
+            }
+            Assert.Fail("Se esperaba ArgumentOutOfRangeException con mensaje específico");
+        }
+
     }
     
 }
