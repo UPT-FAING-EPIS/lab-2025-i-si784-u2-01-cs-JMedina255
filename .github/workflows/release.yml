@@ -1,57 +1,54 @@
 name: Release NuGet package
 
 permissions:
-  contents: read     # Para restore/build
-  packages: write    # Para publicar en GitHub Packages
+  packages: write      # subir paquetes
+  contents: read       # clonar, restaurar, compilar
 
 on:
   push:
     tags:
-      - 'v*'         # Dispara en tags que empiecen por “v”
+      - 'v*'           # cualquier tag que empiece por v
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
-      # 1) Checkout del código
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # 1. Checkout
+    - uses: actions/checkout@v3
 
-      # 2) Instala .NET 7
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '7.0.x'
+    # 2. .NET 7
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
 
-      # 3) Restaura y compila la librería
-      - name: Restore & Build Math.Lib
-        run: |
-          dotnet restore MyMath/Math.Lib/Math.Lib.csproj
-          dotnet build   MyMath/Math.Lib/Math.Lib.csproj --configuration Release
+    # 3. Restore & Build
+    - name: Restore & Build
+      run: |
+        dotnet restore MyMath/Math.Lib/Math.Lib.csproj
+        dotnet build   MyMath/Math.Lib/Math.Lib.csproj -c Release
 
-      # 4) Empaqueta como NuGet (versión = tag sin la “v”)
-      - name: Pack NuGet
-        run: |
-          version=${GITHUB_REF#refs/tags/v}
-          dotnet pack MyMath/Math.Lib/Math.Lib.csproj \
-            --configuration Release \
-            --output ./nupkg \
-            /p:PackageVersion=$version
+    # 4. Pack (la versión = tag sin la v)
+    - name: Pack NuGet
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        dotnet pack MyMath/Math.Lib/Math.Lib.csproj \
+          -c Release -o ./nupkg /p:PackageVersion=$VERSION
 
-      # 5) Publica el paquete en GitHub Packages
-      - name: Publish to GitHub Packages
-        env:               # ← al mismo nivel que name/run
-            NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            dotnet nuget push "./nupkg/*.nupkg" \
-            --source 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json' \
-            --api-key $NUGET_AUTH_TOKEN \
-            --skip-duplicate
+    # 5. Push a GitHub Packages
+    - name: Publish to GitHub Packages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # ← ya trae packages:write
+      run: |
+        dotnet nuget push "nupkg/*.nupkg" \
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --api-key "$GITHUB_TOKEN" \
+          --skip-duplicate
 
-      # 6) Crea el Release en GitHub (asset opcional)
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # 6. Crear el release (opcional)
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
