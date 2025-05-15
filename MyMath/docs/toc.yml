@@ -1,4 +1,8 @@
-- name: Introduction
+- name: Home
+  href: index.md
+
+- name: Introducción
   href: introduction.md
-- name: Getting Started
-  href: getting-started.md
+
+- name: API Reference
+  href: ../api/index.yml

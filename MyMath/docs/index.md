@@ -1,11 +1,6 @@
----
-_layout: landing
----
+# Bienvenido a MyMath
 
-# This is the **HOMEPAGE**.
+Esta documentación cubre la API de la librería **Math.Lib**, que provee el método `SquareRoot`.
 
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
-
-## Quick Start Notes:
-
-1. Add images to the *images* folder if the file is referencing an image.
+- Ve a la sección **API** (en el menú lateral).
+- Consulta la sección **Introducción** para ver cómo usarla.

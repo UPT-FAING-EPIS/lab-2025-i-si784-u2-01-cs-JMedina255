@@ -16,8 +16,8 @@
   },
   "docs/index.html": {
     "href": "docs/index.html",
-    "title": "This is the HOMEPAGE. | MyMath API",
-    "summary": "This is the HOMEPAGE. Refer to Markdown for how to write markdown files. Quick Start Notes: Add images to the images folder if the file is referencing an image."
+    "title": "Bienvenido a MyMath | MyMath API",
+    "summary": "Bienvenido a MyMath Esta documentación cubre la API de la librería Math.Lib, que provee el método SquareRoot. Ve a la sección API (en el menú lateral). Consulta la sección Introducción para ver cómo usarla."
   },
   "docs/introduction.html": {
     "href": "docs/introduction.html",
