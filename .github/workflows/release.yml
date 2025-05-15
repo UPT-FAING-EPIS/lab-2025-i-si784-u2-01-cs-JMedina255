@@ -40,11 +40,12 @@ jobs:
 
       # 5) Publica el paquete en GitHub Packages
       - name: Publish to GitHub Packages
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:               # ← al mismo nivel que name/run
+            NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dotnet nuget push "./nupkg/*.nupkg" \
-            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            dotnet nuget push "./nupkg/*.nupkg" \
+            --source 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json' \
+            --api-key $NUGET_AUTH_TOKEN \
             --skip-duplicate
 
       # 6) Crea el Release en GitHub (asset opcional)
