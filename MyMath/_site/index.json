@@ -1,0 +1,27 @@
+{
+  "api/Math.Lib.Rooter.html": {
+    "href": "api/Math.Lib.Rooter.html",
+    "title": "Class Rooter | MyMath API",
+    "summary": "Class Rooter Namespace Math.Lib Assembly Math.Lib.dll public class Rooter Inheritance object Rooter Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods SquareRoot(double) public double SquareRoot(double input) Parameters input double Returns double"
+  },
+  "api/Math.Lib.html": {
+    "href": "api/Math.Lib.html",
+    "title": "Namespace Math.Lib | MyMath API",
+    "summary": "Namespace Math.Lib Classes Rooter"
+  },
+  "docs/getting-started.html": {
+    "href": "docs/getting-started.html",
+    "title": "Getting Started | MyMath API",
+    "summary": "Getting Started"
+  },
+  "docs/index.html": {
+    "href": "docs/index.html",
+    "title": "This is the HOMEPAGE. | MyMath API",
+    "summary": "This is the HOMEPAGE. Refer to Markdown for how to write markdown files. Quick Start Notes: Add images to the images folder if the file is referencing an image."
+  },
+  "docs/introduction.html": {
+    "href": "docs/introduction.html",
+    "title": "Introduction | MyMath API",
+    "summary": "Introduction"
+  }
+}
