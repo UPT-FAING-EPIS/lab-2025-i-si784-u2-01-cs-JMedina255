@@ -1,0 +1,51 @@
+name: Release NuGet package
+
+on:
+  push:
+    # Detecta tags con tu número de matrícula, p.ej. v2022074255
+    tags:
+      - 'v*' 
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      # 1) Trae el código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2) Setup .NET 7
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      # 3) Compila la librería
+      - name: Restore & Build Math.Lib
+        run: |
+          dotnet restore MyMath/Math.Lib/Math.Lib.csproj
+          dotnet build  MyMath/Math.Lib/Math.Lib.csproj --configuration Release
+
+      # 4) Empaqueta como NuGet (versión igual al tag sin la 'v')
+      - name: Pack NuGet
+        run: |
+          version=${GITHUB_REF#refs/tags/v}
+          dotnet pack MyMath/Math.Lib/Math.Lib.csproj \
+            --configuration Release \
+            --output ./nupkg \
+            /p:PackageVersion=$version
+
+      # 5) Publica el paquete en GitHub Packages
+      - name: Publish to GitHub Packages
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source "github"
+
+      # 6) Crea el Release en GitHub con ese tag
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
