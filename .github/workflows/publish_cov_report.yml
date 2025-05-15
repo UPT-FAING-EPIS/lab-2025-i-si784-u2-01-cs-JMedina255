@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout código
         uses: actions/checkout@v3
 
       - name: Setup .NET
@@ -18,20 +18,25 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore & Test
+      - name: Restore & Test con cobertura
+        working-directory: MyMath             # <— aquí
         run: |
-          dotnet restore
+          dotnet restore                      # ahora restaurará MyMath/MyMath.sln
           dotnet test --collect:"XPlat Code Coverage"
 
-      - name: Install ReportGenerator
+      - name: Instalar ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      - name: Generate HTML report
-        run: reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:Cobertura" -reporttypes:HTML
+      - name: Generar reporte HTML
+        working-directory: MyMath             # <— y aquí
+        run: reportgenerator \
+          "-reports:**/coverage.cobertura.xml" \
+          "-targetdir:Cobertura" \
+          -reporttypes:HTML
 
-      - name: Deploy coverage report to Pages
+      - name: Desplegar reporte de cobertura
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: coverage-pages
-          publish_dir: Cobertura
+          publish_dir: MyMath/Cobertura       # <— apunta a donde realmente genera la carpeta
