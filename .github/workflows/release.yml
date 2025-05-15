@@ -43,8 +43,8 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           dotnet nuget push ./nupkg/*.nupkg \
-            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-            --api-key "${{ secrets.GH_PACKAGES_TOKEN }}" \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
+            --api-key ${{ secrets.GH_PACKAGES_TOKEN }} \
             --skip-duplicate
 
       # 6) Crea el Release en GitHub con ese tag
