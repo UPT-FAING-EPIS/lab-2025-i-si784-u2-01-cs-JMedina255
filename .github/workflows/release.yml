@@ -3,7 +3,7 @@ name: Release NuGet package
 permissions:
   contents: read      # mantiene el permiso para leer el código
   packages: write
-  
+
 on:
   push:
     # Detecta tags con tu número de matrícula, p.ej. v2022074255
@@ -44,7 +44,7 @@ jobs:
         run: |
           dotnet nuget push ./nupkg/*.nupkg \
             --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --api-key ${{ secrets.GH_PACKAGES_TOKEN }} \
             --skip-duplicate
 
       # 6) Crea el Release en GitHub con ese tag
