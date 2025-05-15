@@ -1,5 +1,9 @@
 name: Release NuGet package
 
+permissions:
+  contents: read      # mantiene el permiso para leer el código
+  packages: write
+  
 on:
   push:
     # Detecta tags con tu número de matrícula, p.ej. v2022074255
